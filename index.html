@@ -111,10 +111,10 @@ function display_dogs(target_element, dog_array, max_index)
 function display_one_dog(dog)
 {
   console.log("dog :",dog)
-    var modal = $('#dog_modal');
+    var modal_element = $('#dog_modal');
  
  
-    modal.find('.modal-title').text(dog.breed);
+    modal_element.find('.modal-title').text(dog.breed);
     var dog_image = $('<img>',{
       src: dog.image,
       class:'img_responsive dog_image col-md-6 col-sm-12'
@@ -137,8 +137,8 @@ function display_one_dog(dog)
       html: '<strong>Description</strong> '+dog.description
     });
     dog_info_div.append(dog_disposition_div,dog_rating_div,dog_description_div);
-    modal.find('.modal-body').html('').append(dog_image, dog_info_div);
-    modal.modal('show');
+    modal_element.find('.modal-body').html('').append(dog_image, dog_info_div);
+    modal_element.modal('show');
 }
 $(document).ready(function(){
   var max_dog = find_max_dog(dog_array);
