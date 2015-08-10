@@ -33,11 +33,47 @@
   <script>
   	var flickr_key = '4291af049e7b51ff411bc39565109ce6';
   	var flickr_secret = '08d3df2f4f1d7f62';
+  	var required_keys = ['farm', 'server', 'id', 'secret'];
   	var photo_area;
   	photo_area=null;
-  	function photo_url_create(photo_object){
-  		return 'https://farm'+photo_object.farm+'.staticflickr.com/'+photo_object.server+'/'+photo_object.id+'_'+photo_object.secret+'_s.jpg'
+  	/* function validate_photo_url
+  	* @purpose
+  	* @params:
+  	*	- photo_object:
+  	* @returns:
+  	*       - 
+  	*/
+  	function validate_photo_url(photo_object){
+  		var valid = true;
+  		for(var i=0, r_keys=required_keys.length; i<r_keys; i++){
+  			//console.log('testing '+required_keys[i],photo_object.hasOwnProperty(required_keys[i]));
+  			if(!photo_object.hasOwnProperty(required_keys[i])){
+  				return false;
+  			}
+  		}
+  		return true;
   	}
+   	/* function photo_url_create
+  	* @purpose
+  	* @params:
+  	*	- photo_object:
+  	* @returns:
+  	*       - 
+  	*/
+  	function photo_url_create(photo_object){
+  		if(validate_photo_url(photo_object)){
+  			return 'https://farm'+photo_object.farm+'.staticflickr.com/'+photo_object.server+'/'+photo_object.id+'_'+photo_object.secret+'_s.jpg';
+  		} else {
+  			return false;
+  		}
+  	}
+   	/* function load_photo_data
+  	* @purpose
+  	* @params:
+  	*	- search_text:
+  	* @returns:
+  	*       - 
+  	*/
   	function load_photo_data(search_text){
 
 	  	$.ajax({
@@ -51,7 +87,12 @@
 	  			photo_area.html('');
 	  			for(var i = 0; i<photos.length;i++){
 	  				var url = photo_url_create(photos[i]);
-	  				console.log('now working with',url)
+	  				//console.log('url: ',url);
+	  				if(!url){
+	  					console.log('invalid url');
+	  					break;
+	  				}
+	  				//console.log('now working with',url)
 	  				var figure = $('<figure>',{
 	  					class:'photo_container col-xs-6 col-sm-3 col-lg-1',
 	  					id:"photo_"+i,
